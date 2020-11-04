@@ -1,12 +1,16 @@
 class Station
-  attr_reader :name,:trains_list
+  attr_reader :name, :trains_list
   def initialize(name)
-    @name=(name)
-    @trains_list=[]
+    @name = (name)
+    @trains_list = []
   end
 
   def add_train(train)
-    @trains_list<<train
+    @trains_list << train
+  end
+
+  def remove_train(train)
+    @trains_list.delete(train)
   end
 
   def show_trains_by_type(type)
@@ -15,22 +19,22 @@ class Station
 
   def send_train(train)
     if @trains_list.include? train
-    @trains_list.delete(train)
+    remove_train(train)
     train.move_forward
     end
   end
 end
 
 class Route
-  attr_reader :first,:extra_stations,:last
-  def initialize(first,last)
-   @first=first
-   @last=last
-   @extra_stations=[]
+  attr_reader :first, :extra_stations, :last
+  def initialize(first, last)
+   @first = first
+   @last = last
+   @extra_stations = []
   end
 
   def add_station(station)
-    @extra_stations<<station
+    @extra_stations << station
   end
 
   def remove_station(station)
@@ -39,81 +43,81 @@ class Route
 
   def show_stations
     puts @first.name
-    @extra_stations.each{|station|puts station.name}
+    @extra_stations.each{ |station| puts station.name }
     puts @last.name
+  end
+  def stations
+    stations = []
+    stations << @first
+    stations += @extra_stations
+    stations << @last
   end
 end
 
 class Train 
-  attr_reader :number,:type,:route_serialized;
-  def initialize(number,type,wagon_counter)
-    @number=number
-    @type=type
-    @wagon_counter=wagon_counter
-    @speed=0
-    @station_number=0
-    @route_serialized=[]
+  attr_reader :number, :type, :route
+  def initialize(number, type, wagon_counter)
+    @number = number
+    @type = type
+    @wagon_counter = wagon_counter
+    @speed = 0
+    @station_number= 0
+    @route
   end
 
   def add_speed(speed)
-    @speed+=speed
+    @speed += speed
   end
 
   def drop_speed
-    @speed=0
+    @speed = 0
   end
 
   def add_wagon
-    @wagon_counter+=1
+    @wagon_counter += 1
   end
   
   def remove_wagon
-    @wagon_counter-=1
+    @wagon_counter -= 1
   end
  
   def route(route)
-    @route_serialized<<route.first
-    if route.extra_stations.is_a?(Array)
-      @route_serialized+=route.extra_stations
-    end
-    @route_serialized<<route.last
-    @current_station=@route_serialized[0]
+    @route = route
+    @current_station = @route.stations[0]
     @current_station.add_train(self)
   end
 
   def move_forward
-    if get_next_station.is_a?(Station)
-      @current_station=get_next_station
-      @station_number+=1
+      @current_station.remove_train(self)
+      @current_station = get_next_station
+      @station_number += 1
       @current_station.add_train(self)
-    end
   end
 
   def move_backward
-    if get_ex_station.is_a?(Station)
-      @current_station=get_ex_station
-      @station_number-=1
+      @current_station.remove_train(self)
+      @current_station = get_ex_station
+      @station_number -= 1
       @current_station.add_train(self)
-    end
   end
 
   def get_ex_station
-  if @station_number>0
-    return @route_serialized[@station_number-1]
+  if @station_number > 0
+     @route.stations[@station_number - 1]
   end
   end
 
   def get_current_station
-    return @route_serialized[@station_number]
+     @route.stations[@station_number]
   end
 
   def get_next_station
-    if @station_number<@route_serialized.length-1
-      return @route_serialized[@station_number+1]
+    if @station_number<@route.stations.length - 1
+       @route.stations[@station_number + 1]
     end
   end
   
-  def show_route
+  def show_location
   puts get_ex_station
   puts "#{get_current_station} <--"
   puts get_next_station
