@@ -18,10 +18,7 @@ class Station
   end
 
   def send_train(train)
-    if @trains_list.include? train
     remove_train(train)
-    train.move_forward
-    end
   end
 end
 
@@ -47,10 +44,7 @@ class Route
     puts @last.name
   end
   def stations
-    stations = []
-    stations << @first
-    stations += @extra_stations
-    stations << @last
+    [@first, *@extra_stations, @last]
   end
 end
 
@@ -61,8 +55,6 @@ class Train
     @type = type
     @wagon_counter = wagon_counter
     @speed = 0
-    @station_number= 0
-    @route
   end
 
   def add_speed(speed)
@@ -90,35 +82,33 @@ class Train
   def move_forward
       @current_station.remove_train(self)
       @current_station = get_next_station
-      @station_number += 1
       @current_station.add_train(self)
   end
 
   def move_backward
       @current_station.remove_train(self)
       @current_station = get_ex_station
-      @station_number -= 1
       @current_station.add_train(self)
   end
 
-  def get_ex_station
-  if @station_number > 0
-     @route.stations[@station_number - 1]
+  def get_previous_station
+  if @route.stations.index(@current_station) > 0
+     @route.stations[@route.stations.index(@current_station) - 1]
   end
   end
 
   def get_current_station
-     @route.stations[@station_number]
+     @current_station
   end
 
   def get_next_station
-    if @station_number<@route.stations.length - 1
-       @route.stations[@station_number + 1]
+    if @route.stations.index(@current_station) < @route.stations.length - 1
+       @route.stations[@route.stations.index(@current_station) + 1]
     end
   end
   
   def show_location
-  puts get_ex_station
+  puts get_previous_station
   puts "#{get_current_station} <--"
   puts get_next_station
   end
