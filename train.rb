@@ -7,7 +7,7 @@ class Train
     @number = number
     @speed = 0
     @wagons_array = []
-    @type=''
+    @type = ''
   end
 
   def add_speed(speed)
@@ -64,24 +64,15 @@ class Train
 end
 
 class PassengerTrain < Train
- 
   def initialize(number)
-    @number = number
-    @speed = 0
-    @wagons_array = []
+    super
     @type = 'Passenger'
   end
-
-
 end
 
 class CargoTrain < Train
-
   def initialize(number)
-    @number = number
-    @speed = 0
-    @wagons_array = []
+    super
     @type = 'Cargo'
   end
-
 end

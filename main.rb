@@ -10,6 +10,7 @@ class Interface
     @trains = []
     @routes = []
   end
+
   def menu
     puts 'Выбор действий:'
     puts '1.Создать станцию'
@@ -154,7 +155,5 @@ class Interface
   end
 end
 
-
-
 ui = Interface.new
-ui.menu()
+ui.menu
