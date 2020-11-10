@@ -7,7 +7,6 @@ class Train
     @number = number
     @speed = 0
     @wagons_array = []
-    @type = ''
   end
 
   def add_speed(speed)
@@ -37,9 +36,7 @@ class Train
   end
 
   def show_location
-    puts previous_station
-    puts "#{@current_station} <--"
-    puts next_station
+    [previous_station, *@current_station, next_station]
   end
 
   def remove_wagon
