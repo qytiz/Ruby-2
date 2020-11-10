@@ -7,7 +7,7 @@ class Train
     @number = number
     @speed = 0
     @wagons_array = []
-    type
+    @type=''
   end
 
   def add_speed(speed)
@@ -46,11 +46,11 @@ class Train
     @wagons_array.delete_at(@wagons_array.length - 1)
   end
 
-  protected
-
-  def change_type # Переопределение типа должно быть доступно только поеду
-    @type = ''
+  def add_wagon(wagon)
+    @wagons_array << wagon if wagon.type == @type
   end
+
+  protected
 
   def previous_station # Получать данные о следующей и предыдущей станциях требуется только поезду
     @route.stations[@route.stations.index(@current_station) - 1] if @route.stations.index(@current_station).positive?
@@ -64,25 +64,24 @@ class Train
 end
 
 class PassengerTrain < Train
-  def add_wagon(wagon)
-    @wagons_array << wagon if wagon.instance_of?(PassengerWagon)
-  end
-
-  protected
-
-  def change_type
+ 
+  def initialize(number)
+    @number = number
+    @speed = 0
+    @wagons_array = []
     @type = 'Passenger'
   end
+
+
 end
 
 class CargoTrain < Train
-  def add_wagon(wagon)
-    @wagons_array << wagon if wagon.instance_of?(CargoWagon)
-  end
 
-  protected
-
-  def change_type
+  def initialize(number)
+    @number = number
+    @speed = 0
+    @wagons_array = []
     @type = 'Cargo'
   end
+
 end

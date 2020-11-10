@@ -18,9 +18,7 @@ class Route
   end
 
   def show_stations
-    puts @first.name
-    @extra_stations.each { |station| puts station.name }
-    puts @last.name
+    [@first, *@extra_stations, @last]
   end
 
   def name
