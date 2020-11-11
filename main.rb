@@ -29,7 +29,7 @@ class Interface
     when 2
       create_train
     when 3
-      create_controll_route
+      controll_route
     when 4
       add_route
     when 5
@@ -67,42 +67,14 @@ class Interface
     end
   end
 
-  def create_controll_route
+  def controll_route
     puts '1.Создание маршрутов'
     puts '2.Управление маршрутами'
     case gets.chomp.to_i
     when 1
-      puts 'Укажите отправную станцию из списка'
-      @stations.each_with_index { |station, index| puts "#{index + 1}. #{station.name}" }
-      route_begin = @stations[gets.chomp.to_i - 1]
-      puts 'Укажите конечную станцию'
-      @stations.each_with_index do |station, index|
-        next if station == route_begin
-
-        puts "#{index + 1}. #{station.name}"
-      end
-      @routes << Route.new(route_begin, @stations[gets.chomp.to_i - 1])
+      create_route
     when 2
-      puts 'Укажите каким маршрутом необходимо управлять'
-      @routes.each_with_index { |route, index| puts "#{index + 1}. #{route.name}" }
-      route_index = gets.chomp.to_i - 1
-      puts 'Укажите что сделать с маршрутом'
-      puts '1.Добавить станцию'
-      puts '2.Удалить станцию'
-      case gets.chomp.to_i
-      when 1
-        puts 'Укажите какую станцию добавить'
-        @stations.each_with_index do |station, index|
-          next if [0].include?(index)
-
-          puts "#{index + 1}. #{station.name}"
-        end
-        @routes[route_index].add_station(@stations[gets.chomp.to_i - 1])
-      when 2
-        puts 'Укажите какую станцию удалить'
-        @routes[route_index].extra_stations.each_with_index { |station, index| puts "#{index + 1}. #{station.name}" }
-        @routes[route_index].remove_station(@routes[route_index].extra_stations[gets.chomp.to_i - 1])
-      end
+      manipulate_route
     end
   end
 
@@ -151,6 +123,42 @@ class Interface
     @stations.each do |station|
       puts station.name.to_s
       station.trains_list.each { |train| puts train.number.to_s }
+    end
+  end
+
+  def create_route
+    puts 'Укажите отправную станцию из списка'
+    @stations.each_with_index { |station, index| puts "#{index + 1}. #{station.name}" }
+    route_begin = @stations[gets.chomp.to_i - 1]
+    puts 'Укажите конечную станцию'
+    @stations.each_with_index do |station, index|
+      next if station == route_begin
+
+      puts "#{index + 1}. #{station.name}"
+    end
+    @routes << Route.new(route_begin, @stations[gets.chomp.to_i - 1])
+  end
+
+  def manipulate_route
+    puts 'Укажите каким маршрутом необходимо управлять'
+    @routes.each_with_index { |route, index| puts "#{index + 1}. #{route.name}" }
+    route_index = gets.chomp.to_i - 1
+    puts 'Укажите что сделать с маршрутом'
+    puts '1.Добавить станцию'
+    puts '2.Удалить станцию'
+    case gets.chomp.to_i
+    when 1
+      puts 'Укажите какую станцию добавить'
+      @stations.each_with_index do |station, index|
+        next if [0].include?(index)
+
+        puts "#{index + 1}. #{station.name}"
+      end
+      @routes[route_index].add_station(@stations[gets.chomp.to_i - 1])
+    when 2
+      puts 'Укажите какую станцию удалить'
+      @routes[route_index].extra_stations.each_with_index { |station, index| puts "#{index + 1}. #{station.name}" }
+      @routes[route_index].remove_station(@routes[route_index].extra_stations[gets.chomp.to_i - 1])
     end
   end
 end
