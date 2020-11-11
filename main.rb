@@ -148,18 +148,26 @@ class Interface
     puts '2.Удалить станцию'
     case gets.chomp.to_i
     when 1
-      puts 'Укажите какую станцию добавить'
-      @stations.each_with_index do |station, index|
-        next if [0].include?(index)
-
-        puts "#{index + 1}. #{station.name}"
-      end
-      @routes[route_index].add_station(@stations[gets.chomp.to_i - 1])
+      add_station_to_route
     when 2
-      puts 'Укажите какую станцию удалить'
-      @routes[route_index].extra_stations.each_with_index { |station, index| puts "#{index + 1}. #{station.name}" }
-      @routes[route_index].remove_station(@routes[route_index].extra_stations[gets.chomp.to_i - 1])
+      remove_station_from_route
     end
+  end
+
+  def add_station_to_route
+    puts 'Укажите какую станцию добавить'
+    @stations.each_with_index do |station, index|
+      next if [0].include?(index)
+
+      puts "#{index + 1}. #{station.name}"
+    end
+    @routes[route_index].add_station(@stations[gets.chomp.to_i - 1])
+  end
+
+  def remove_station_from_route
+    puts 'Укажите какую станцию удалить'
+    @routes[route_index].extra_stations.each_with_index { |station, index| puts "#{index + 1}. #{station.name}" }
+    @routes[route_index].remove_station(@routes[route_index].extra_stations[gets.chomp.to_i - 1])
   end
 end
 
