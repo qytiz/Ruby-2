@@ -1,12 +1,24 @@
 # frozen_string_literal: true
 
+require_relative 'company_name'
+require_relative 'instance_counter'
 class Train
   attr_reader :number, :route, :current_station, :wagons_array, :type
 
+  include CompanyName
+  include InstanceCounter
+
+  @@all_trains = []
   def initialize(number)
     @number = number
     @speed = 0
     @wagons_array = []
+    @@all_trains << self
+    register_instance
+  end
+
+  def self.find(number)
+    @@all_trains.find { |train| train.number == number }
   end
 
   def add_speed(speed)

@@ -9,6 +9,7 @@ class Interface
     @stations = []
     @trains = []
     @routes = []
+    @wagons = []
   end
 
   def menu
@@ -21,6 +22,7 @@ class Interface
     puts '6.Отцепить вагон  от поезда'
     puts '7.Переместить поезд по маршруту'
     puts '8.Просмотреть список станций и поездов на станции'
+    puts '9.Добавить компанию-владельца поезда/вагона'
     puts '0.Выход'
 
     case gets.chomp.to_i
