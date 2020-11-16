@@ -1,23 +1,20 @@
 # frozen_string_literal: true
 
+require_relative 'company_name'
+require_relative 'instance_counter'
 class Train
   attr_reader :number, :route, :current_station, :wagons_array, :type
 
-<<<<<<< Updated upstream
-=======
   include CompanyName
   include InstanceCounter
 
   NUMBER_FORMAT = /(\d|[a-z]){3,}-?(\d|[a-z]){2,}/i.freeze
 
   @@all_trains = []
->>>>>>> Stashed changes
   def initialize(number)
     @number = number
     @speed = 0
     @wagons_array = []
-<<<<<<< Updated upstream
-=======
     @@all_trains << self
     register_instance
     validate!
@@ -32,7 +29,6 @@ class Train
 
   def self.find(number)
     @@all_trains.find { |train| train.number == number }
->>>>>>> Stashed changes
   end
 
   def add_speed(speed)
