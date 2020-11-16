@@ -6,6 +6,23 @@ class Station
   def initialize(name)
     @name = name
     @trains_list = []
+<<<<<<< Updated upstream
+=======
+    @@all_stations << self
+    register_instance
+    validate!
+  end
+
+  def valid?
+    validate!
+    true
+  rescue StandardError
+    false
+  end
+
+  def self.all
+    @@all_stations
+>>>>>>> Stashed changes
   end
 
   def add_train(train)
@@ -18,5 +35,11 @@ class Station
 
   def show_trains_by_type(type)
     @trains_list.find_all { |train| train.type == type }
+  end
+
+  private
+
+  def validate!
+    raise 'Название не может быть пустым' if name.length <= 0
   end
 end

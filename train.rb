@@ -3,10 +3,36 @@
 class Train
   attr_reader :number, :route, :current_station, :wagons_array, :type
 
+<<<<<<< Updated upstream
+=======
+  include CompanyName
+  include InstanceCounter
+
+  NUMBER_FORMAT = /(\d|[a-z]){3,}-?(\d|[a-z]){2,}/i.freeze
+
+  @@all_trains = []
+>>>>>>> Stashed changes
   def initialize(number)
     @number = number
     @speed = 0
     @wagons_array = []
+<<<<<<< Updated upstream
+=======
+    @@all_trains << self
+    register_instance
+    validate!
+  end
+
+  def valid?
+    validate!
+    true
+  rescue StandardError
+    false
+  end
+
+  def self.find(number)
+    @@all_trains.find { |train| train.number == number }
+>>>>>>> Stashed changes
   end
 
   def add_speed(speed)
@@ -48,6 +74,11 @@ class Train
   end
 
   protected
+
+  def validate!
+    raise 'Номер не может быть пустым' if number.length <= 0
+    raise 'Номер поезда указан в неверном формате' if number !~ NUMBER_FORMAT
+  end
 
   def previous_station # Получать данные о следующей и предыдущей станциях требуется только поезду
     @route.stations[@route.stations.index(@current_station) - 1] if @route.stations.index(@current_station).positive?
