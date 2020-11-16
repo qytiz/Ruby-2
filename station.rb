@@ -5,12 +5,13 @@ class Station
 
   include InstanceCounter
   @@all_stations = []
-  
+
   def initialize(name)
     @name = name
     @trains_list = []
     @@all_stations << self
     register_instance
+
     validate!
   end
 
@@ -19,6 +20,7 @@ class Station
     true
   rescue StandardError
     false
+
   end
 
   def self.all

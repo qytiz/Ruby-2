@@ -8,6 +8,7 @@ class Train
   include CompanyName
   include InstanceCounter
 
+
   NUMBER_FORMAT = /(\d|[a-z]){3,}-?(\d|[a-z]){2,}/i.freeze
 
   @@all_trains = []
@@ -17,6 +18,7 @@ class Train
     @wagons_array = []
     @@all_trains << self
     register_instance
+
     validate!
   end
 
@@ -25,6 +27,7 @@ class Train
     true
   rescue StandardError
     false
+
   end
 
   def self.find(number)
