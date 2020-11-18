@@ -28,4 +28,14 @@ class Station
   def show_trains_by_type(type)
     @trains_list.find_all { |train| train.type == type }
   end
+
+  def give_to_block
+  @trains_list.each{ |train| yield(train)}
+  end
+
+  private
+
+  def validate!
+    raise 'Название не может быть пустым' if name.length <= 0
+  end
 end

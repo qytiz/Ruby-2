@@ -22,7 +22,8 @@ class Interface
     puts '6.Отцепить вагон  от поезда'
     puts '7.Переместить поезд по маршруту'
     puts '8.Просмотреть список станций и поездов на станции'
-    puts '9.Добавить компанию-владельца поезда/вагона'
+    puts '9.Отобразить вагоны'
+    puts '10.Занять место в вагоне'
     puts '0.Выход'
 
     case gets.chomp.to_i
@@ -42,6 +43,10 @@ class Interface
       move_train
     when 8
       show_stations
+    when 9
+      show_wagons
+    when 10
+      take_space_wagons
     when 0
       abort
     end
@@ -88,15 +93,16 @@ class Interface
     @routes.each_with_index { |route, index| puts "#{index + 1}. #{route.name}" }
     @trains[train_index].add_route(@routes[gets.chomp.to_i - 1])
   end
-
+  
   def add_wagon
     puts 'Укажите к какому поезду вы хотите добавить вагон'
     @trains.each_with_index { |train, index| puts "#{index + 1}. #{train.number}" }
     train_index = gets.chomp.to_i - 1
+    puts 'Укажите объем или количество мест вагона'
     if @trains[train_index].type == 'Cargo'
-      @trains[train_index].add_wagon(CargoWagon.new)
+      @trains[train_index].add_wagon(CargoWagon.new(gets.chomp.to_i))
     else
-      @trains[train_index].add_wagon(PassengerWagon.new)
+      @trains[train_index].add_wagon(PassengerWagon.new(gets.chomp.to_i))
     end
   end
 
@@ -104,6 +110,29 @@ class Interface
     puts 'Укажите от какого поезда необходимо отцепить вагон'
     @trains.each_with_index { |train, index| puts "#{index + 1}. #{train.number}" }
     @trains[gets.chomp.to_i - 1].remove_wagon
+  end
+
+  
+  def show_wagons
+    puts'Укажите вагоны какого поезда отобразить'
+    @trains.each_with_index { |train, index| puts "#{index + 1}. #{train.number}" }
+    train_index=gets.chomp.to_i-1
+      @trains[train_index].wagons_array.each{ | wagon | puts "#{wagon.number}, #{wagon.type}, #{wagon.left_space}, #{wagon.taken_space}"}
+  end
+
+  def take_space_wagons
+    puts 'Укажите у какого поезда нужный вагон'
+    @trains.each_with_index { |train, index| puts "#{index + 1}. #{train.number}" }
+    train_index=gets.chomp.to_i-1
+    puts 'Укажите в каком вагоне необходимо занять место'
+    @trains[train_index].wagons_array.each_with_index { |wagon, index| puts "#{index + 1}. №#{wagon.number}, свободно #{wagon.left_space}" }
+    wagon_index=gets.chomp.to_i-1
+    if @trains[train_index].wagons_array[wagon_index].type == 'Cargo'
+      puts('Укажите сколько места необходимо занять')
+      @trains[train_index].wagons_array[wagon_index].take_space(gets.chomp.to_i)
+    else
+      @trains[train_index].wagons_array[wagon_index].take_space
+    end
   end
 
   def move_train
@@ -124,7 +153,7 @@ class Interface
   def show_stations
     @stations.each do |station|
       puts station.name.to_s
-      station.trains_list.each { |train| puts train.number.to_s }
+      station.trains_list.each { |train| puts "#{train.number},#{train.type},#{train.wagons_array.length}" }
     end
   end
 
