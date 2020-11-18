@@ -49,9 +49,15 @@ class Interface
   end
 
   def create_station
-    puts 'Введите название станции'
-    station_name = gets.chomp
-    @stations << Station.new(station_name)
+    begin
+      puts 'Введите название станции'
+      station_name = gets.chomp.to_s
+      @stations << Station.new(station_name)
+    rescue StandardError => e
+      puts e.message
+      retry
+    end
+    puts "Станция #{station_name} успешно создана"
   end
 
   def create_train
@@ -59,14 +65,20 @@ class Interface
     puts '1. Пассажирский'
     puts '2. Грузовой'
     train_type = gets.chomp.to_i
-    puts 'Укажите номер поезда'
-    train_number = gets.chomp.to_i
-    case train_type
-    when 1
-      @trains << PassengerTrain.new(train_number)
-    when 2
-      @trains << CargoTrain.new(train_number)
+    begin
+      puts 'Укажите номер поезда'
+      train_number = gets.chomp.to_s
+      case train_type
+      when 1
+        @trains << PassengerTrain.new(train_number)
+      when 2
+        @trains << CargoTrain.new(train_number)
+      end
+    rescue StandardError => e
+      puts e.message
+      retry
     end
+    puts "Поезд #{train_number} успешно создан"
   end
 
   def controll_route
