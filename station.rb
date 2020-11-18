@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative 'instance_counter'
 class Station
   attr_reader :name, :trains_list
@@ -20,7 +21,6 @@ class Station
     true
   rescue StandardError
     false
-
   end
 
   def self.all
@@ -42,7 +42,7 @@ class Station
   def give_to_block(&block)
     @trains_list.each(&block)
   end
-  
+
   private
 
   def validate!
