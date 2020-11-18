@@ -4,15 +4,16 @@ require_relative 'company_name'
 class Wagon
   include CompanyName
   include InstanceCounter
-  attr_reader :type,:taken_space, :number
+  attr_reader :type, :taken_space, :number
+
   def initialize(space)
-    @all_space=space;
-    @taken_space=0;
-    @number=rand(10000...99999)
+    @all_space = space
+    @taken_space = 0
+    @number = rand(10_000...99_999)
   end
 
   def left_space
-  @all_space-@taken_space;
+    @all_space - @taken_space
   end
 end
 
@@ -23,9 +24,8 @@ class PassengerWagon < Wagon
   end
 
   def take_space
-    @taken_space+=1;
+    @taken_space += 1
   end
-
 end
 
 class CargoWagon < Wagon
@@ -34,8 +34,8 @@ class CargoWagon < Wagon
     super
     @type = 'Cargo'
   end
-  
+
   def take_space(space)
-  @taken_space+=space;
+    @taken_space += space
   end
 end

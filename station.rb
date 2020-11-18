@@ -29,8 +29,8 @@ class Station
     @trains_list.find_all { |train| train.type == type }
   end
 
-  def give_to_block
-  @trains_list.each{ |train| yield(train)}
+  def give_to_block(&block)
+    @trains_list.each(&block)
   end
 
   private

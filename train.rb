@@ -70,11 +70,10 @@ class Train
       @route.stations[@route.stations.index(@current_station) + 1]
     end
   end
-  
-  def give_to_block
-    @wagons_array.each{ |wagon| yield(wagon)}
+
+  def give_to_block(&block)
+    @wagons_array.each(&block)
   end
-  
 end
 
 class PassengerTrain < Train
