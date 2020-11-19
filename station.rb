@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative 'instance_counter'
 class Station
   attr_reader :name, :trains_list
@@ -20,7 +21,6 @@ class Station
     true
   rescue StandardError
     false
-
   end
 
   def self.all
@@ -37,6 +37,10 @@ class Station
 
   def show_trains_by_type(type)
     @trains_list.find_all { |train| train.type == type }
+  end
+
+  def give_to_block(block)
+    @trains_list.each{ |train| yield(train) }
   end
 
   private

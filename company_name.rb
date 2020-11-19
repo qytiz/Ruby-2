@@ -2,5 +2,4 @@
 
 module CompanyName
   attr_accessor :owner
-
 end

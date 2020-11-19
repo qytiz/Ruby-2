@@ -8,7 +8,6 @@ class Train
   include CompanyName
   include InstanceCounter
 
-
   NUMBER_FORMAT = /(\d|[a-z]){3,}-?(\d|[a-z]){2,}/i.freeze
 
   @@all_trains = []
@@ -27,7 +26,6 @@ class Train
     true
   rescue StandardError
     false
-
   end
 
   def self.find(number)
@@ -87,6 +85,10 @@ class Train
     if @route.stations.index(@current_station) < @route.stations.length - 1
       @route.stations[@route.stations.index(@current_station) + 1]
     end
+  end
+
+  def give_to_block(&block)
+    @wagons_array.each(&block)
   end
 end
 
