@@ -30,7 +30,7 @@ module Validation
     end
 
     def validate_presence(var_name)
-      raise "объект не существует или пустой" if var_name.nil? || var_name.empty?
+      raise 'объект не существует или пустой' if var_name.nil? || var_name.empty?
     end
 
     def validate_format(var_name, format)

@@ -10,9 +10,8 @@ class Train
   include CompanyName
   include InstanceCounter
 
-  NUMBER_FORMAT = /(\d|[a-z]){3,}-?(\d|[a-z]){2,}/i
+  NUMBER_FORMAT = /(\d|[a-z]){3,}-?(\d|[a-z]){2,}/i.freeze
 
-  
   validate :number, :presence
   validate :number, :type, String
   validate :number, :format, NUMBER_FORMAT
@@ -77,7 +76,6 @@ class Train
   end
 
   protected
-
 
   def previous_station # Получать данные о следующей и предыдущей станциях требуется только поезду
     @route.stations[@route.stations.index(@current_station) - 1] if @route.stations.index(@current_station).positive?

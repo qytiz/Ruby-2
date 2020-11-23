@@ -1,13 +1,13 @@
 # frozen_string_literal: true
+
 require_relative 'instance_counter'
 require_relative 'validation'
 class Station
- include InstanceCounter
+  include InstanceCounter
   include Validation
- 
- attr_reader  :name,:trains_list
-  
- 
+
+  attr_reader :name, :trains_list
+
   @@all_stations = []
 
   validate :name, :presence
@@ -44,10 +44,7 @@ class Station
     @trains_list.find_all { |train| train.type == type }
   end
 
-  def give_to_block(block)
-    @trains_list.each{ |train| yield(train) }
+  def give_to_block(_block, &block)
+    @trains_list.each(&block)
   end
-
-  private
-
 end
