@@ -1,11 +1,16 @@
 # frozen_string_literal: true
-
 require_relative 'instance_counter'
+require_relative 'validation'
 class Station
-  attr_reader :name, :trains_list
-
-  include InstanceCounter
+ include InstanceCounter
+  include Validation
+ 
+ attr_reader  :name,:trains_list
+  
+ 
   @@all_stations = []
+
+  validate :name, :presence
 
   def initialize(name)
     @name = name
@@ -45,7 +50,4 @@ class Station
 
   private
 
-  def validate!
-    raise 'Название не может быть пустым' if name.length <= 0
-  end
 end

@@ -2,13 +2,20 @@
 
 require_relative 'company_name'
 require_relative 'instance_counter'
+require_relative 'validation'
 class Train
   attr_reader :number, :route, :current_station, :wagons_array, :type
 
+  include Validation
   include CompanyName
   include InstanceCounter
 
-  NUMBER_FORMAT = /(\d|[a-z]){3,}-?(\d|[a-z]){2,}/i.freeze
+  NUMBER_FORMAT = /(\d|[a-z]){3,}-?(\d|[a-z]){2,}/i
+
+  
+  validate :number, :presence
+  validate :number, :type, String
+  validate :number, :format, NUMBER_FORMAT
 
   @@all_trains = []
   def initialize(number)
@@ -17,7 +24,6 @@ class Train
     @wagons_array = []
     @@all_trains << self
     register_instance
-
     validate!
   end
 
@@ -72,10 +78,6 @@ class Train
 
   protected
 
-  def validate!
-    raise 'Номер не может быть пустым' if number.length <= 0
-    raise 'Номер поезда указан в неверном формате' if number !~ NUMBER_FORMAT
-  end
 
   def previous_station # Получать данные о следующей и предыдущей станциях требуется только поезду
     @route.stations[@route.stations.index(@current_station) - 1] if @route.stations.index(@current_station).positive?
@@ -93,6 +95,9 @@ class Train
 end
 
 class PassengerTrain < Train
+  validate :number, :presence
+  validate :number, :type, String
+  validate :number, :format, NUMBER_FORMAT
   def initialize(number)
     super
     @type = 'Passenger'
@@ -100,6 +105,9 @@ class PassengerTrain < Train
 end
 
 class CargoTrain < Train
+  validate :number, :presence
+  validate :number, :type, String
+  validate :number, :format, NUMBER_FORMAT
   def initialize(number)
     super
     @type = 'Cargo'
